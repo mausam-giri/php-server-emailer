@@ -1,27 +1,29 @@
 ### Email Sender Constructor
+
 ```php
     /**
      * EmailSender constructor.
      * @param array $config The SMTP configuration parameters.
-     *       Expected keys: host, port, username, password, 
+     *       Expected keys: host, port, username, password,
      *                      from_email, from_name, reply_to, smtp_debug (optional).
-     
-     * @param string|array $body 
+
+     * @param string|array $body
      *       If it's a string, it represents inline HTML content. If it's an array,
      *       it should contain the path to the HTML template file and placeholders.
      *       Example: [
-     *                  'template_file' => 'path/to/template.html', 
-     *                  'placeholders' => ['name' => 'John', 
+     *                  'template_file' => 'path/to/template.html',
+     *                  'placeholders' => ['name' => 'John',
      *                ]
-     
-     * @param bool $isHTMLFile 
+
+     * @param bool $isHTMLFile
      *       Determines if $body is an HTML file or inline HTML.
-     
+
      * @param array $attachments
      *       Array containing file paths and names for attachments.
      *       Example: ['path' => 'path/to/file.pdf', 'name' => 'attachment.pdf'].
      */
 ```
+
 ### Setting Config file : config.php
 
 ```php
@@ -35,8 +37,8 @@ const SMTP_FROM = 'smtp_email';
 const SMTP_FROM_NAME = "sender_name_to_display";
 ```
 
-
 ### Usage Example with HTML Template
+
 ```php
 
 <?php
@@ -113,7 +115,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         'smtp_debug' => 0, // optional if you want to get debug information
     ];
 
-    // Set body content for the HTML Template and 
+    // Set body content for the HTML Template and
     // variable to replace in HTML Template
     $body = array(
         "template_file" => dirname(__FILE__). '\template\contact-us.html',
@@ -133,14 +135,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 ```
-### Usage Example with HTML Template
+
+### Usage Example with inline HTML
 
 ```php
     $body = "Inline HTML content";
     $isHTMLFile = false;
     $emailSender = new EmailSender($config, $body, $isHTMLFile);
 ```
-### Usage example with Email Attachments 
+
+### Usage example with Email Attachments
 
 ```php
     // Attachments to send
