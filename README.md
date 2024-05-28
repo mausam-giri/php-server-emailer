@@ -22,6 +22,19 @@
      *       Example: ['path' => 'path/to/file.pdf', 'name' => 'attachment.pdf'].
      */
 ```
+### Setting Config file : config.php
+
+```php
+
+const SMTP_HOST = 'hostname';
+const SMTP_PORT_SSL = 465; // ssl
+const SMTP_PORT_TLS = 587; // tls
+const SMTP_USERNAME = 'smtp_username';
+const SMTP_PASSWORD = 'smtp_password';
+const SMTP_FROM = 'smtp_email';
+const SMTP_FROM_NAME = "sender_name_to_display";
+```
+
 
 ### Usage Example with HTML Template
 ```php
@@ -127,6 +140,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $isHTMLFile = false;
     $emailSender = new EmailSender($config, $body, $isHTMLFile);
 ```
+### Usage example with Email Attachments 
 
 ```php
     // Attachments to send
