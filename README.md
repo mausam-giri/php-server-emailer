@@ -1,3 +1,31 @@
+### Email Sender Constructor
+```php
+    /**
+     * EmailSender constructor.
+     * @param array $config The SMTP configuration parameters.
+     *       Expected keys: host, port, username, password, 
+     *                      from_email, from_name, reply_to, smtp_debug (optional).
+     
+     * @param string|array $body 
+     *       If it's a string, it represents inline HTML content. If it's an array,
+     *       it should contain the path to the HTML template file and placeholders.
+     *       Example: [
+     *                  'template_file' => 'path/to/template.html', 
+     *                  'placeholders' => ['name' => 'John', 
+     *                ]
+     
+     * @param bool $isHTMLFile 
+     *       Determines if $body is an HTML file or inline HTML.
+     
+     * @param array $attachments
+     *       Array containing file paths and names for attachments.
+     *       Example: ['path' => 'path/to/file.pdf', 'name' => 'attachment.pdf'].
+     */
+```
+
+### Usage Example with HTML Template
+```php
+
 <?php
 
 require "config.php";
@@ -51,14 +79,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Prepare email placeholders
     $placeholders = [
-        'project_type' => htmlspecialchars($project_type),
-        'name_address' => htmlspecialchars($name_address),
-        'phone_number' => htmlspecialchars($phone_number),
-        'email_id' => htmlspecialchars($email_id),
-        'sanctioned_load' => htmlspecialchars($sanctioned_load),
-        'avg_monthly_bill' => htmlspecialchars($avg_monthly_bill)
+        'project_type' => $project_type,
+        'name_address' => $name_address,
+        'phone_number' => $phone_number,
+        'email_id' => $email_id,
+        'sanctioned_load' => $sanctioned_load,
+        'avg_monthly_bill' => $avg_monthly_bill
     ];
 
+    // Using config from config.php
     $server_config = [
         'host' => SMTP_HOST,
         'port' => SMTP_PORT_TLS,
@@ -71,6 +100,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         'smtp_debug' => 0, // optional if you want to get debug information
     ];
 
+    // Set body content for the HTML Template and 
+    // variable to replace in HTML Template
     $body = array(
         "template_file" => dirname(__FILE__). '\template\contact-us.html',
         "placeholders" => $placeholders
@@ -81,9 +112,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Send email
     $response = $emailSender->send();
-    // Send email
+    // Send Response
     echo json_encode($response);
 
 }else{
     http_response_code(400);
 }
+
+```
+### Usage Example with HTML Template
+
+```php
+    $body = "Inline HTML content";
+    $isHTMLFile = false;
+    $emailSender = new EmailSender($config, $body, $isHTMLFile);
+```
+
+```php
+    // Attachments to send
+    $attachments = [
+        ['path' => 'path/to/attachment1.pdf', 'name' => 'Attachment1.pdf'],
+        ['path' => 'path/to/attachment2.docx', 'name' => 'Attachment2.docx'],
+    ];
+    $emailSender = new EmailSender($server_config, $body, true, $attachments);
+```

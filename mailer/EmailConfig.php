@@ -36,7 +36,7 @@ class EmailConfig
             $this->mail->SMTPDebug = isset($this->config['smtp_debug']) ? $this->config['smtp_debug'] : 0;
 
             $this->mail->setFrom($this->config['from_email'], $this->config['from_name']);
-            if (isset($this->config['reply_to'])) {
+            if (isset($this->config['reply_to']) && !empty($this->config['reply_to'])) {
                 $this->mail->addReplyTo($this->config['reply_to']);
             }
         } catch (Exception $e) {
